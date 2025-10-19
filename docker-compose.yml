@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: collabboard-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: collabboard
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./backend/scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - collabboard-network
+
+  # Redis Cache
+  redis:
+    image: redis:7.2-alpine
+    container_name: collabboard-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - collabboard-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: collabboard-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/collabboard?authSource=admin
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: 165210075345202cea4799fe1860d1d384409c8cda0d44ee44524801b6d83f5f
+      JWT_EXPIRES_IN: 7d
+      FRONTEND_URL: http://localhost:5173
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./backend/uploads:/app/uploads
+    networks:
+      - collabboard-network
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: collabboard-frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:3001/api
+      VITE_SOCKET_URL: http://localhost:3001
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - collabboard-network
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  collabboard-network:
+    driver: bridge
+
