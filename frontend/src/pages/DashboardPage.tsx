@@ -123,7 +123,7 @@ const DashboardPage: React.FC = () => {
 
           {/* Create New Board */}
           <Link
-            to="/board/new"
+            to="/board/1"
             className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Plus className="w-5 h-5" />
@@ -146,7 +146,7 @@ const DashboardPage: React.FC = () => {
           </p>
           {!searchQuery && (
             <Link
-              to="/board/new"
+              to="/board/1"
               className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               <Plus className="w-5 h-5" />

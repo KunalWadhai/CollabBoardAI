@@ -74,35 +74,73 @@ function App() {
         />
 
         {/* Protected Routes */}
-        <Route 
-          path="/dashboard" 
+        <Route
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <Layout>
                 <DashboardPage />
               </Layout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/board/:boardId" 
+        <Route
+          path="/board/:boardId"
+          element={
+            <ProtectedRoute>
+              <BoardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/boards"
           element={
             <ProtectedRoute>
               <Layout>
-                <BoardPage />
+                <DashboardPage />
               </Layout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/profile" 
+        <Route
+          path="/starred"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <DashboardPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/collaborators"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <DashboardPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <DashboardPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
           element={
             <ProtectedRoute>
               <Layout>
                 <ProfilePage />
               </Layout>
             </ProtectedRoute>
-          } 
+          }
         />
 
         {/* Catch all route */}

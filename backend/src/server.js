@@ -24,7 +24,7 @@ import { setupSocketHandlers } from './socket/socketHandlers.js';
 import { connectDB } from './config/database.js';
 import { connectRedis } from './config/redis.js';
 
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
 const app = express();
 const server = createServer(app);

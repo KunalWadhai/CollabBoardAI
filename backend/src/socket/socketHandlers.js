@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 import User from '../models/User.js';
 import Board from '../models/Board.js';
 import { addUserToRoom, removeUserFromRoom, getRoomUsers } from '../config/redis.js';
@@ -38,9 +39,20 @@ export const setupSocketHandlers = (io) => {
     // Join board room
     socket.on('join-board', async (boardId) => {
       try {
+        // Validate boardId
+        if (!mongoose.Types.ObjectId.isValid(boardId)) {
+          socket.emit('error', { message: 'Invalid board ID' });
+          return;
+        }
+
         // Verify user has access to board
         const board = await Board.findById(boardId);
-        if (!board || !board.hasAccess(socket.userId)) {
+        if (!board) {
+          socket.emit('error', { message: 'Board not found' });
+          return;
+        }
+
+        if (!board.hasAccess(socket.userId)) {
           socket.emit('error', { message: 'Access denied to board' });
           return;
         }

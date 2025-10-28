@@ -33,6 +33,16 @@ export const useSocket = () => {
     newSocket.on('connect', () => {
       console.log('✅ Connected to server')
       setIsConnected(true)
+
+      // Join board room if boardId exists and is valid
+      if (boardId && boardId !== 'new') {
+        newSocket.emit('join-board', boardId)
+      }
+    })
+    // Connection events
+    newSocket.on('connect', () => {
+      console.log('✅ Connected to server')
+      setIsConnected(true)
       
       // Join board room if boardId exists
       if (boardId) {

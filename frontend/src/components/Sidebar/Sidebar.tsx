@@ -1,14 +1,15 @@
 import React from 'react'
-import { 
-  Home, 
-  Plus, 
-  FolderOpen, 
-  Star, 
-  Settings, 
+import {
+  Home,
+  Plus,
+  FolderOpen,
+  Star,
+  Settings,
   LogOut,
   Users,
   MessageSquare
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 
 const Sidebar: React.FC = () => {
@@ -16,7 +17,7 @@ const Sidebar: React.FC = () => {
 
   const menuItems = [
     { icon: Home, label: 'Dashboard', href: '/dashboard' },
-    { icon: Plus, label: 'New Board', href: '/board/new' },
+    { icon: Plus, label: 'New Board', href: '/board/1' },
     { icon: FolderOpen, label: 'My Boards', href: '/boards' },
     { icon: Star, label: 'Starred', href: '/starred' },
     { icon: Users, label: 'Collaborators', href: '/collaborators' },
@@ -37,13 +38,13 @@ const Sidebar: React.FC = () => {
         <ul className="space-y-2">
           {menuItems.map(({ icon: Icon, label, href }) => (
             <li key={href}>
-              <a
-                href={href}
+              <Link
+                to={href}
                 className="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 <Icon size={20} />
                 <span>{label}</span>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
