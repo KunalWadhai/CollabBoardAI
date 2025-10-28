@@ -48,8 +48,10 @@ router.post('/register', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     );
+   // res.cookie('token', token, {httpOnly:true});
 
-    res.status(201).json({
+    console.log(username, email, password);
+      res.status(201).json({
       message: 'User created successfully',
       user: {
         id: user._id,
@@ -57,9 +59,10 @@ router.post('/register', async (req, res) => {
         email: user.email,
         avatar: user.avatar,
         createdAt: user.createdAt
-      },
-      token
+      }, 
+      token: token
     });
+   // res.redirect("/login");
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ message: 'Server error' });
